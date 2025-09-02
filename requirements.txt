@@ -31,3 +31,8 @@ tzdata==2023.3
 tzlocal==5.2
 urllib3==2.2.1
 whitenoise==6.4.0
+dj-database-url
+python-decouple
+dj-database-url==3.0.1
+python-decouple==3.8
+psycopg[binary]==3.2.2

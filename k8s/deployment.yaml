@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: django-app
+  template:
+    metadata:
+      labels:
+        app: django-app
+    spec:
+      containers:
+        - name: django-app
+          image: zamshed/django-app:v1
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: rapid.settings
+            - name: DATABASE_URL
+              value: postgres://django:django123@postgres:5432/rapiddb
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          env:
+            - name: POSTGRES_USER
+              value: django
+            - name: POSTGRES_PASSWORD
+              value: django123
+            - name: POSTGRES_DB
+              value: rapiddb
+          ports:
+            - containerPort: 5432
+
